@@ -1,5 +1,5 @@
 #![crate_type="lib"]
-#![feature(raw, convert, static_mutex)]
+//#![feature(raw, convert, static_mutex)]
 
 #[macro_use]
 extern crate log;

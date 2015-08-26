@@ -1,6 +1,6 @@
 use std::path::{Path, PathBuf};
-use {ffi, lock};
-
+use {ffi,lock};
+use std::ffi as stdffi;
 /// Import and export FFTW wisdom implicitly.
 ///
 /// The destructor will save wisdom to the file from which it was
@@ -51,7 +51,7 @@ pub fn import_from_system() -> bool {
 
 /// Attempt to save wisdom to `p`.
 pub fn export_to_file(p: &Path) -> bool {
-    let v = p.as_os_str().to_cstring().unwrap();
+    let v = stdffi::CString::new(p.as_os_str().to_str().unwrap()).unwrap();
     unsafe {
         lock::run(|| ffi::fftw_export_wisdom_to_filename(v.as_ptr() as *const i8) != 0)
     }

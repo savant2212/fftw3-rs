@@ -3,7 +3,7 @@
 use ffi;
 use traits::Zero;
 use libc;
-use std::{mem, ptr, raw};
+use std::{mem, ptr, raw, slice};
 use std::ops::{Deref, DerefMut};
 
 struct RawVec<T> {
@@ -26,12 +26,12 @@ impl<T> RawVec<T> {
 impl<T> Deref for RawVec<T> {
     type Target = [T];
     fn deref(&self) -> &[T] {
-        unsafe {mem::transmute(raw::Slice { data: self.dat as *const T, len: self.len })}
+        unsafe {mem::transmute(slice::from_raw_parts (self.dat as *const T, self.len ))}
     }
 }
 impl<T> DerefMut for RawVec<T> {
     fn deref_mut(&mut self) -> &mut [T] {
-        unsafe {mem::transmute(raw::Slice { data: self.dat as *const T, len: self.len })}
+        unsafe {mem::transmute(slice::from_raw_parts(self.dat as *const T, self.len ))}
     }
 }
 
